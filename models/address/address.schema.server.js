@@ -6,5 +6,5 @@ var addressSchema = mongoose.Schema({
     state: String,
     zip: String,
     primary: Boolean
-}, {collection: 'user'});
+}, {collection: 'address'});
 module.exports = addressSchema;
