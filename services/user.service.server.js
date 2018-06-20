@@ -8,7 +8,12 @@ module.exports = function (app) {
     app.post('/api/login', login);
     app.get('/api/login',isLoggedIn);
     app.get('/api/login/isAdmin',isAdmin);
+    app.get('/api/get-token', getToken);
     var userModel = require('../models/user/user.model.server');
+
+    function getToken(req, res) {
+        res.json({'hello':'hello'})
+    }
 
     function isAdmin(req,res){
         if(req.session['currentUser']===undefined){

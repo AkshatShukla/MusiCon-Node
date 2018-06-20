@@ -1,6 +1,6 @@
 var express = require('express')
 var bodyParser = require('body-parser');
-const mongoose = require('mongoose');
+const mongoose = require('mongoose'), extend = require('mongoose-schema-extend');
 mongoose.connect('mongodb://heroku_m9j3xqd6:cqo386da2m9s1lhqui3roqbn2b@ds263710.mlab.com:63710/heroku_m9j3xqd6');//db url
 
 
@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin",
-    "https://assignment4-angular.herokuapp.com");
+    "*");
   res.header("Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept");
   res.header("Access-Control-Allow-Methods",
