@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin",
-    "*");
+    "http://localhost:3000");
   res.header("Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept");
   res.header("Access-Control-Allow-Methods",
@@ -19,9 +19,6 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Credentials", "true");
   next();
 });
-
-
-
 
 var session = require('express-session')
 app.use(session({
@@ -33,21 +30,12 @@ app.use(session({
 
 app.get('/', function (req, res) {
   res.send('Hello World')
-})
-
-app.get('/', function (req, res) {
-  var theMessage = req.params['theMessage'];
-  res.send(theMessage);
-})
+});
 
 app.get('/api/session/set/:name/:value',
   setSession);
 app.get('/api/session/get/:name',
   getSession);
-// app.get('/api/session/get',
-//   getSessionAll);
-// app.get('/api/session/reset',
-//   resetSession);
 
 function setSession(req, res) {
   var name = req.params['name'];
@@ -65,5 +53,8 @@ function getSession(req, res) {
 
 var userService = require('./services/user.service.server');
 userService(app);
+
+var spotifyService = require('./services/spotify.service.server');
+spotifyService(app);
 
 app.listen(process.env.PORT || 4000);

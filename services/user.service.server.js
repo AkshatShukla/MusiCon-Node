@@ -10,23 +10,7 @@ module.exports = function (app) {
     app.post('/api/login', login);
     app.get('/api/login',isLoggedIn);
     app.get('/api/login/isAdmin',isAdmin);
-    app.get('/api/get-token', getToken);
     var userModel = require('../models/user/user.model.server');
-
-    function getToken(req, res) {
-        fetch('https://accounts.spotify.com/api/token', {
-            body: "grant_type=client_credentials",
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Authorization': 'Basic OTlmMDIxMjk4MjBlNGM0YjlmNDk4OWQ5OGM1Y2JlODU6MGJhODViNzZjOGY0NDFlNTgwZGI1OTIwMGViYzJjMDA='
-            },
-            method: 'post'
-        })
-            .then((response) => {
-                console.log(response.json().then(r => res.json(r.access_token)));
-            });
-        //res.json({'hello':'hello'})
-    }
 
     function isAdmin(req,res){
         if(req.session['currentUser']===undefined){
