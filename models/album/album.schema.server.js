@@ -3,8 +3,9 @@ var mongoose = require('mongoose');
 var albumSchema = mongoose.Schema({
     name: String,
     spotifyId: {type: String, unique: true},
+    releaseDate: String,
     artist: String,
-    url: String,
+    externalUrl: String,
     imageUrl:String
 }, {collection: 'album'});
 
