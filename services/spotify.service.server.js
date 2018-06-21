@@ -29,7 +29,8 @@ module.exports = function (app) {
                             response.json().then(r => {
                                 res.json(r.access_token);
                                 //updating db
-                                spotifyModel.insert(r.access_token,timenow);
+                                spotifyModel.insert(r.access_token,timenow)
+                                    .then(response => console.log("Updates DB"));
                             })
                         });
                 }

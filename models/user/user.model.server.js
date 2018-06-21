@@ -9,7 +9,7 @@ var audiophileModel = mongoose.model('AudiophileModel', audiophileSchema);
 var musicListenerModel = mongoose.model('MusicListenerModel', musicListenerSchema);
 
 function findUserByCredentials(credentials) {
-  return userModel.findOne(credentials, {username: 1});
+  return userModel.findOne(credentials, {username: 1,type:1});
 }
 
 function findUserById(userId) {

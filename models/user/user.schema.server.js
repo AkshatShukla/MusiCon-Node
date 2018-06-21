@@ -7,7 +7,12 @@ var userSchema = mongoose.Schema({
     lastName: String,
     email: String,
     dob: Date,
-    addresss:[{type:mongoose.Schema.Types.ObjectId,ref:'AddressModel'}],
-    type: {type: String, default: 'User'},
+    addresss:String,
+    phone:Number,
+    type: String,
+    eventLocation:String,
+    playlist:[{type:mongoose.Schema.Types.ObjectId}],
+    events:[{type:mongoose.Schema.Types.ObjectId}],
+
 }, {collection: 'user'});
 module.exports = userSchema;

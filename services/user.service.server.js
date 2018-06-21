@@ -8,10 +8,27 @@ module.exports = function (app) {
     app.put('/api/profile', updateProfile);
     app.post('/api/logout', logout);
     app.post('/api/login', login);
+    app.post('/api/register',register);
     app.get('/api/login',isLoggedIn);
     app.get('/api/login/isAdmin',isAdmin);
     var userModel = require('../models/user/user.model.server');
 
+    function register(req,res){
+        var user = req.body;
+        userModel.findByUserName(user.username)
+            .then(result => {
+                if(result===null){
+                    userModel.createUser(user)
+                        .then(user=>{
+                            req.session['currentUser']={_id:user._id,username:user.username,type:user.type};
+                            res.sendStatus(200);
+                        });
+                }
+                else{
+                    res.sendStatus(500);
+                }
+            });
+    }
     function isAdmin(req,res){
         if(req.session['currentUser']===undefined){
             res.sendStatus(501);
@@ -67,7 +84,6 @@ module.exports = function (app) {
     }
     function login(req, res) {
         var credentials = req.body;
-
         userModel
             .findUserByCredentials(credentials)
             .then(function(user) {
@@ -77,6 +93,7 @@ module.exports = function (app) {
                 else{
                     req.session['currentUser'] = user;
                     req.session['userId'] = user._id;
+                    req.session['userType'] = user.userType;
                     res.json(user);}
             })
     }
@@ -96,7 +113,8 @@ module.exports = function (app) {
 
     function profile(req, res) {
         // userModel.findUserByUsername(req.session['currentUser']);
-        userModel.findUserById(req.session['currentUser']._id)
+
+        userModel.findUserById(req.session['userId'])
             .then(response=> res.send(response));
         // res.send(req.session['currentUser']);
         // console.log(req.session['currentUser']);
