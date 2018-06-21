@@ -1,12 +1,6 @@
 var mongoose = require('mongoose');
 var userSchema = require('./user.schema.server');
-var concertMangerSchema = require('./concertManager.schema.server');
-var audiophileSchema = require('./audiophile.schema.server');
-var musicListenerSchema = require('./musicListener.schema.server');
 var userModel = mongoose.model('UserModel', userSchema);
-var concertManagerModel = mongoose.model('ConcertManagerModel', concertMangerSchema);
-var audiophileModel = mongoose.model('AudiophileModel', audiophileSchema);
-var musicListenerModel = mongoose.model('MusicListenerModel', musicListenerSchema);
 
 function findUserByCredentials(credentials) {
   return userModel.findOne(credentials, {username: 1,type:1});
