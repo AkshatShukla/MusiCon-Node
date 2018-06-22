@@ -1,35 +1,38 @@
 module.exports = function (app) {
 
-    app.post('/api/likeAlbum', createAlbum);
+    app.post('/api/likeTrack', createTrack);
 
-    var albumModel = require('../models/album/album.model.server');
-    var likeAlbum = require('../models/likeAlbum/likeAlbum.model.server');
+    var trackModel = require('../models/track/track.model.server');
+    var likeTrack = require('../models/likeTrack/likeTrack.model.server');
 
 
-    function createAlbum(req, res) {
-        var album = req.body;
+    function createTrack(req, res) {
+        var track = req.body;
         var user = req.session.currentUser;
-        var newAlbum = {
-            name: album.name,
-            spotifyId: album.id,
-            releaseDate: album.release_date,
-            artist: album.artists[0].name,
-            externalUrl: album.external_urls.spotify,
-            imageUrl: (album.images.length !== 0 ? album.images[0].url : '')
+        var newTrack = {
+            name: track.name,
+            spotifyId: track.id,
+            artist: track.artists[0].name,
+            url: track.external_urls.spotify,
+            imageUrl: (track.album.images.length !== 0 ? track.album.images[0].url : ''),
+            duration:track.duration_ms,
+            popularity:track.popularity,
+            previewUrl:track.preview_url,
+
         };
         if (user === undefined) {
             res.sendStatus(500);
         }
         else {
-            albumModel.findAlbumBySpotifyId(newAlbum.spotifyId)
+            trackModel.findTrackBySpotifyId(newTrack.spotifyId)
                 .then(queryresult => {
                     if (queryresult === null) {
-                        albumModel.createAlbum(newAlbum)
-                            .then((album) =>
-                                likeAlbum.findByHash(req.session.userId, album._id)
+                        trackModel.createTrack(newTrack)
+                            .then((track) =>
+                                likeTrack.findByHash(req.session.userId, track._id)
                                     .then(hashFindResult =>{
                                         if(hashFindResult===null){
-                                            likeAlbum.createLike(req.session.userId, album._id)
+                                            likeTrack.createLike(req.session.userId, track._id)
                                                 .then(()=> res.sendStatus(200))
                                         }
                                         else{
@@ -39,10 +42,10 @@ module.exports = function (app) {
                             )
                     }
                     else {
-                        likeAlbum.findByHash(req.session.userId, queryresult._id)
+                        likeTrack.findByHash(req.session.userId, queryresult._id)
                             .then(hashFindResult =>{
                                 if(hashFindResult===null){
-                                    likeAlbum.createLike(req.session.userId, queryresult._id)
+                                    likeTrack.createLike(req.session.userId, queryresult._id)
                                         .then(()=> res.sendStatus(200))
                                 }
                                 else{

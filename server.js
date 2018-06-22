@@ -59,6 +59,8 @@ spotifyService(app);
 
 var albumService = require('./services/album.service.server');
 albumService(app);
+var trackService = require('./services/track.service.server');
+trackService(app)
 
 var eventService  = require('./services/event.service.server');
 eventService(app);

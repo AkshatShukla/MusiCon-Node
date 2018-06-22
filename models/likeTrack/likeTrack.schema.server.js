@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var likeSchema = mongoose.Schema({
+var likeTrackSchema = mongoose.Schema({
     track: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'TrackModel'
@@ -7,6 +7,10 @@ var likeSchema = mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'UserModel'
+    },
+    hash: {
+        type: String,
+        unique: true
     }
-}, {collection: 'like'});
-module.exports = likeSchema;
+}, {collection: 'likeTrack'});
+module.exports = likeTrackSchema;
