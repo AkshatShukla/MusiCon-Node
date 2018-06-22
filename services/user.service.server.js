@@ -1,5 +1,3 @@
-var fetch = require('node-fetch');
-
 module.exports = function (app) {
     app.get('/api/user', findAllUsers);
     app.get('/api/user/:userId', findUserById);

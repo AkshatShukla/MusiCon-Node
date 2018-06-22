@@ -57,4 +57,7 @@ userService(app);
 var spotifyService = require('./services/spotify.service.server');
 spotifyService(app);
 
+var albumService = require('./services/album.service.server');
+albumService(app);
+
 app.listen(process.env.PORT || 4000);

@@ -16,7 +16,6 @@ module.exports = function (app) {
                 // console.log('time now',timenow);
                 // console.log(diffDays + " days, " + diffHrs + " hours, ");
                 if (diffDays > 0 || diffHrs >= 1) {
-                    console.log("Getting a new Token");
                     fetch('https://accounts.spotify.com/api/token', {
                         body: "grant_type=client_credentials",
                         headers: {
@@ -30,12 +29,11 @@ module.exports = function (app) {
                                 res.json(r.access_token);
                                 //updating db
                                 spotifyModel.insert(r.access_token,timenow)
-                                    .then(response => console.log("Updates DB"));
+                                    .then(response => (response));
                             })
                         });
                 }
                 else {
-                    console.log("Using existing token");
                     res.json(token.token);
                 }
                 // res.json(token);
