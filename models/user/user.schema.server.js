@@ -15,4 +15,5 @@ var userSchema = mongoose.Schema({
     events:[{type: mongoose.Schema.Types.ObjectId, ref: 'EventModel'}],
 
 }, {collection: 'user'});
+
 module.exports = userSchema;
