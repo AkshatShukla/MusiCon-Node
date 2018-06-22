@@ -5,8 +5,11 @@ var trackSchema = mongoose.Schema({
     spotifyId: {type: String, unique: true},
     artist: String,
     url: String,
-    listeners: Number,
-    imageUrl:String
+    imageUrl: String,
+    listener: Number,
+    duration: Number,
+    popularity: Number,
+    previewUrl: String
 }, {collection: 'track'});
 
 module.exports = trackSchema;

@@ -59,5 +59,7 @@ spotifyService(app);
 
 var albumService = require('./services/album.service.server');
 albumService(app);
+var trackService = require('./services/track.service.server');
+trackService(app)
 
 app.listen(process.env.PORT || 4000);
