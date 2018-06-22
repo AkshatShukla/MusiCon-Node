@@ -36,20 +36,20 @@ module.exports = function (app) {
                                                 .then(()=> res.sendStatus(200))
                                         }
                                         else{
-                                            res.sendStatus(200)
+                                            res.sendStatus(501)
                                         }
                                     })
                             )
                     }
                     else {
-                        likeTrack.findByHash(req.session.userId, track._id)
+                        likeTrack.findByHash(req.session.userId, queryresult._id)
                             .then(hashFindResult =>{
                                 if(hashFindResult===null){
-                                    likeTrack.createLike(req.session.userId, track._id)
+                                    likeTrack.createLike(req.session.userId, queryresult._id)
                                         .then(()=> res.sendStatus(200))
                                 }
                                 else{
-                                    res.sendStatus(200)
+                                    res.sendStatus(501)
                                 }
                             })
                     }

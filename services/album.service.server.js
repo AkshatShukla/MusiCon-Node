@@ -33,7 +33,7 @@ module.exports = function (app) {
                                                 .then(()=> res.sendStatus(200))
                                         }
                                         else{
-                                            res.sendStatus(200)
+                                            res.sendStatus(501)
                                         }
                                     })
                             )
@@ -46,7 +46,7 @@ module.exports = function (app) {
                                         .then(()=> res.sendStatus(200))
                                 }
                                 else{
-                                    res.sendStatus(200)
+                                    res.sendStatus(501)
                                 }
                             })
                     }
