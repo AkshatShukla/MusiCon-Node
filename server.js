@@ -66,4 +66,6 @@ var eventService = require('./services/event.service.server');
 eventService(app);
 var artistService = require('./services/artist.service.server');
 artistService(app);
+var adminService = require('./services/admin.service.server');
+adminService(app);
 app.listen(process.env.PORT || 4000);
