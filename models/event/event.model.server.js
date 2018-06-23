@@ -4,11 +4,19 @@ var eventModel = mongoose.model('EventModel', eventSchema);
 
 
 function createEvent(event) {
-    return eventModel.create({name: event.eventName, date: event.eventDate, location: event.venueName})
+    return eventModel.create({
+        name: event.eventName,
+        date: event.eventDate,
+        location: event.venueName})
+}
+
+function deleteEvent(eventId) {
+    return eventModel.remove(eventId);
 }
 
 var api = {
-    createEvent: createEvent
+    createEvent: createEvent,
+    deleteEvent: deleteEvent
 };
 
 module.exports = api;

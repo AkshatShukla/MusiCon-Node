@@ -24,15 +24,31 @@ function updateUser(id, user) {
 }
 
 function updateUserEvent(id, event) {
-    return userModel.update({_id: id}, {$push: {events: event}})
+    return userModel.update({_id: id}, {$push: {events: event._id}})
 }
 
-function findByUserName(username) {
-    return userModel.findOne({username: username});
+function deleteUserEvent(id, event) {
+    return userModel.update({_id: id}, {$pull: {events: event._id}})
 }
 
 function findAllEventOfUser(user) {
     return userModel.findOne({_id: user._id}, {events: 1}).populate('events')
+}
+
+function updateUserPlayList(id, playlist) {
+    return userModel.update({_id: id}, {$push: {playlist: playlist._id}})
+}
+
+function deleteUserPlaylist(id, playlist) {
+    return userModel.update({_id: id}, {$pull: {playlist: playlist._id}})
+}
+
+function findAllPlaylistOfUser(user) {
+    return userModel.findOne({_id: user._id}, {playlist: 1}).populate('playlist')
+}
+
+function findByUserName(username) {
+    return userModel.findOne({username: username});
 }
 
 var api = {
@@ -43,7 +59,11 @@ var api = {
     updateUser: updateUser,
     findByUserName: findByUserName,
     updateUserEvent: updateUserEvent,
-    findAllEventOfUser: findAllEventOfUser
+    findAllEventOfUser: findAllEventOfUser,
+    deleteUserEvent: deleteUserEvent,
+    updateUserPlayList: updateUserPlayList,
+    findAllPlaylistOfUser: findAllPlaylistOfUser,
+    deleteUserPlaylist: deleteUserPlaylist
 };
 
 module.exports = api;
