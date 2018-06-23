@@ -24,7 +24,11 @@ function updateUser(id, user) {
 }
 
 function updateUserEvent(id, event) {
-    return userModel.update({_id: id}, {$push: {events: event}})
+    return userModel.update({_id: id}, {$push: {events: event._id}})
+}
+
+function deleteUserEvent(id, event) {
+    return userModel.update({_id: id}, {$pull: {events: event._id}})
 }
 
 function findByUserName(username) {
@@ -43,7 +47,8 @@ var api = {
     updateUser: updateUser,
     findByUserName: findByUserName,
     updateUserEvent: updateUserEvent,
-    findAllEventOfUser: findAllEventOfUser
+    findAllEventOfUser: findAllEventOfUser,
+    deleteUserEvent: deleteUserEvent
 };
 
 module.exports = api;
