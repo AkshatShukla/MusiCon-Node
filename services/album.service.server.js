@@ -1,12 +1,15 @@
 module.exports = function (app) {
 
-    app.post('/api/likeAlbum', createAlbum);
+    app.post('/api/likeAlbum', likeAlbum);
+    app.get('/api/likedAlbums', getLikedAlbums);
+    app.delete('/api/dislikeAlbum', dislikeAlbum);
 
     var albumModel = require('../models/album/album.model.server');
-    var likeAlbum = require('../models/likeAlbum/likeAlbum.model.server');
+    var likeAlbumModel = require('../models/likeAlbum/likeAlbum.model.server');
+    var userModel = require('../models/user/user.model.server');
 
 
-    function createAlbum(req, res) {
+    function likeAlbum(req, res) {
         var album = req.body;
         var user = req.session.currentUser;
         var newAlbum = {
@@ -26,10 +29,10 @@ module.exports = function (app) {
                     if (queryresult === null) {
                         albumModel.createAlbum(newAlbum)
                             .then((album) =>
-                                likeAlbum.findByHash(req.session.userId, album._id)
+                                likeAlbumModel.findByHash(req.session.userId, album._id)
                                     .then(hashFindResult =>{
                                         if(hashFindResult===null){
-                                            likeAlbum.createLike(req.session.userId, album._id)
+                                            likeAlbumModel.createLike(req.session.userId, album._id)
                                                 .then(()=> res.sendStatus(200))
                                         }
                                         else{
@@ -39,10 +42,10 @@ module.exports = function (app) {
                             )
                     }
                     else {
-                        likeAlbum.findByHash(req.session.userId, queryresult._id)
+                        likeAlbumModel.findByHash(req.session.userId, queryresult._id)
                             .then(hashFindResult =>{
                                 if(hashFindResult===null){
-                                    likeAlbum.createLike(req.session.userId, queryresult._id)
+                                    likeAlbumModel.createLike(req.session.userId, queryresult._id)
                                         .then(()=> res.sendStatus(200))
                                 }
                                 else{
@@ -54,4 +57,27 @@ module.exports = function (app) {
         }
 
     }
-}
+
+    function dislikeAlbum(req, res) {
+        var album = req.body;
+        var user = req.session.currentUser;
+        likeAlbumModel.dislikeAlbum(user._id, album._id)
+            .then(() => res.sendStatus(200))
+    }
+
+    function getLikedAlbums(req, res) {
+        var user = req.session['currentUser'];
+        var resultAlbums = [];
+        likeAlbumModel.findLikedAlbumForUser(user._id)
+            .then((likedAlbums) => {
+                likedAlbums.map((likedAlbum) => {
+                    resultAlbums.push(likedAlbum.Album)
+                });
+                res.send(resultAlbums);
+            })
+            .catch(() => {
+                res.sendStatus(501);
+                res.send(resultAlbums);
+            });
+    }
+};

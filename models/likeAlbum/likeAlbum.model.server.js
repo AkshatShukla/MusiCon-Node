@@ -2,17 +2,27 @@ var mongoose = require('mongoose');
 var likeAlbumSchema = require('./likeAlbum.schema.server');
 var likeAlbumModel = mongoose.model('LikeAlbumModel', likeAlbumSchema);
 
-function createLike(userid,albumid) {
-    return likeAlbumModel.create({Album:albumid,user:userid,hash:albumid+userid})
+function createLike(userId, albumId) {
+    return likeAlbumModel.create({Album:albumId, user:userId, hash:albumId+userId})
 }
-function findByHash(userid,albumid){
-    return likeAlbumModel.findOne({hash:albumid+userid})
+function findByHash(userId, albumId){
+    return likeAlbumModel.findOne({hash:albumId+userId})
+}
+
+function findLikedAlbumForUser(userId) {
+    return likeAlbumModel.find({user: userId}, {Album: 1}).populate('Album')
+}
+
+function dislikeAlbum(userId, albumId) {
+    return likeAlbumModel.deleteOne({user: userId, Album: albumId})
 }
 
 var api = {
 
     createLike: createLike,
-    findByHash:findByHash
+    findByHash:findByHash,
+    findLikedAlbumForUser: findLikedAlbumForUser,
+    dislikeAlbum: dislikeAlbum
 };
 
 module.exports = api;
