@@ -4,7 +4,10 @@ var eventModel = mongoose.model('EventModel', eventSchema);
 
 
 function createEvent(event) {
-    return eventModel.create({name: event.eventName, date: event.eventDate, location: event.venueName})
+    return eventModel.create({
+        name: event.eventName,
+        date: event.eventDate,
+        location: event.venueName})
 }
 
 function deleteEvent(eventId) {

@@ -1,6 +1,6 @@
 module.exports = function (app) {
 
-    app.post('/api/createEvent', createEvent);
+    app.post('/api/event', createEvent);
     app.get('/api/events', findAllEventOfUser);
     app.delete('/api/event/:eventId', deleteEvent);
 

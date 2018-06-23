@@ -59,10 +59,14 @@ spotifyService(app);
 
 var albumService = require('./services/album.service.server');
 albumService(app);
+
 var trackService = require('./services/track.service.server');
-trackService(app)
+trackService(app);
 
 var eventService  = require('./services/event.service.server');
 eventService(app);
+
+var playlistService = require('./services/playlist.service.server');
+playlistService(app);
 
 app.listen(process.env.PORT || 4000);
