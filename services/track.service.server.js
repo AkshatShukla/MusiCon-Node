@@ -1,12 +1,14 @@
 module.exports = function (app) {
 
-    app.post('/api/likeTrack', createTrack);
+    app.post('/api/likeTrack', likeTrack);
+    app.get('/api/likedTracks', getLikedTracks);
+    app.delete('/api/dislikeTrack', dislikeTrack);
 
     var trackModel = require('../models/track/track.model.server');
-    var likeTrack = require('../models/likeTrack/likeTrack.model.server');
+    var likeTrackModel = require('../models/likeTrack/likeTrack.model.server');
 
 
-    function createTrack(req, res) {
+    function likeTrack(req, res) {
         var track = req.body;
         var user = req.session.currentUser;
         var newTrack = {
@@ -29,10 +31,10 @@ module.exports = function (app) {
                     if (queryresult === null) {
                         trackModel.createTrack(newTrack)
                             .then((track) =>
-                                likeTrack.findByHash(req.session.userId, track._id)
+                                likeTrackModel.findByHash(req.session.userId, track._id)
                                     .then(hashFindResult =>{
                                         if(hashFindResult===null){
-                                            likeTrack.createLike(req.session.userId, track._id)
+                                            likeTrackModel.createLike(req.session.userId, track._id)
                                                 .then(()=> res.sendStatus(200))
                                         }
                                         else{
@@ -42,10 +44,10 @@ module.exports = function (app) {
                             )
                     }
                     else {
-                        likeTrack.findByHash(req.session.userId, queryresult._id)
+                        likeTrackModel.findByHash(req.session.userId, queryresult._id)
                             .then(hashFindResult =>{
                                 if(hashFindResult===null){
-                                    likeTrack.createLike(req.session.userId, queryresult._id)
+                                    likeTrackModel.createLike(req.session.userId, queryresult._id)
                                         .then(()=> res.sendStatus(200))
                                 }
                                 else{
@@ -55,6 +57,28 @@ module.exports = function (app) {
                     }
                 });
         }
-
     }
-}
+
+    function dislikeTrack(req, res) {
+        var track = req.body;
+        var user = req.session.currentUser;
+        likeTrackModel.dislikeTrack(user._id, track._id)
+            .then(() => res.sendStatus(200))
+    }
+
+    function getLikedTracks(req, res) {
+        var user = req.session['currentUser'];
+        var resultTracks = [];
+        likeTrackModel.findLikedTrackForUser(user._id)
+            .then((likedTracks) => {
+                likedTracks.map((likedTrack) => {
+                    resultTracks.push(likedTrack.track)
+                });
+                res.send(resultTracks);
+            })
+            .catch(() => {
+                res.sendStatus(501);
+                res.send(resultTracks);
+            });
+    }
+};
