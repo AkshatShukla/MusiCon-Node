@@ -6,11 +6,23 @@ var albumRecommendedModel = mongoose.model('AlbumRecommendedModel', albumRecomme
 function createFollow(userid,albumid) {
     return albumRecommendedModel.create({album:albumid,user:userid,hash:albumid+userid})
 }
+
 function findByHash(userid,albumid){
     return albumRecommendedModel.findOne({hash:albumid+userid})
 }
+
+function findAll() {
+    return albumRecommendedModel.find().populate('album user')
+}
+
+function deleteRecommendedAlbum(id) {
+    return albumRecommendedModel.remove({_id: id})
+}
+
 var api = {
     createFollow:createFollow,
-    findByHash:findByHash
+    findByHash:findByHash,
+    findAll: findAll,
+    deleteRecommendedAlbum: deleteRecommendedAlbum
 };
 module.exports = api;

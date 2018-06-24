@@ -5,11 +5,23 @@ var trackRecommendedModel = mongoose.model('TrackRecommendedModel', trackRecomme
 function createFollow(userid,trackid) {
     return trackRecommendedModel.create({track:trackid,user:userid,hash:trackid+userid})
 }
+
 function findByHash(userid,trackid){
     return trackRecommendedModel.findOne({hash:trackid+userid})
 }
+
+function findAll() {
+    return trackRecommendedModel.find().populate('track user')
+}
+
+function deleteRecommendedTrack(id) {
+    return trackRecommendedModel.remove({_id: id})
+}
+
 var api = {
     createFollow:createFollow,
-    findByHash:findByHash
+    findByHash:findByHash,
+    findAll: findAll,
+    deleteRecommendedTrack: deleteRecommendedTrack
 };
 module.exports = api;

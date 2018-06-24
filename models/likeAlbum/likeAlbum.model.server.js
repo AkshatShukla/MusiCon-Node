@@ -17,12 +17,22 @@ function dislikeAlbum(userId, albumId) {
     return likeAlbumModel.deleteOne({user: userId, Album: albumId})
 }
 
+function findAll() {
+    return likeAlbumModel.find().populate('Album user')
+}
+
+function deleteLikedAlbum(id) {
+    return likeAlbumModel.remove({_id: id})
+}
+
 var api = {
 
     createLike: createLike,
     findByHash:findByHash,
     findLikedAlbumForUser: findLikedAlbumForUser,
-    dislikeAlbum: dislikeAlbum
+    dislikeAlbum: dislikeAlbum,
+    findAll: findAll,
+    deleteLikedAlbum: deleteLikedAlbum
 };
 
 module.exports = api;

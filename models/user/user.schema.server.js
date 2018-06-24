@@ -10,6 +10,7 @@ var userSchema = mongoose.Schema({
     city: {type: String, default: ''},
     phone: {type: Number, default: 0},
     type: String,
+    description: {type: String, default: ''},
     eventLocation: {type: String, default: ''},
     playlist:[{type: mongoose.Schema.Types.ObjectId, ref: 'PlaylistModel'}],
     events:[{type: mongoose.Schema.Types.ObjectId, ref: 'EventModel'}],
