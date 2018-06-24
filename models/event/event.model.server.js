@@ -30,7 +30,7 @@ function deleteArtistFromEvent(eventId, artistId) {
     return eventModel.update({_id: eventId._id}, {$pull: {artist: artistId._id}})
 }
 function findEventByCity(city){
-    return eventModel.find({location:city})
+    return eventModel.find({location:city}).populate('artist')
 }
 function updateEvent(event){
     return eventModel.updateOne({_id:event._id},event)
