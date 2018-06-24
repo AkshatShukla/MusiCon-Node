@@ -17,11 +17,21 @@ function dislikeTrack(userId, trackId) {
     return likeTrackModel.deleteOne({user: userId, track: trackId})
 }
 
+function findAll() {
+    return likeTrackModel.find().populate('track user')
+}
+
+function deleteLikedTrack(id) {
+    return likeTrackModel.remove({_id: id})
+}
+
 var api = {
     createLike: createLike,
     findByHash:findByHash,
     findLikedTrackForUser: findLikedTrackForUser,
-    dislikeTrack: dislikeTrack
+    dislikeTrack: dislikeTrack,
+    findAll: findAll,
+    deleteLikedTrack: deleteLikedTrack
 };
 
 module.exports = api;

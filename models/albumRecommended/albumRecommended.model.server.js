@@ -11,9 +11,18 @@ function findByHash(userId, albumId) {
     return albumRecommendedModel.findOne({hash: albumId + userId})
 }
 
-function findById(id, type) {
-    return albumRecommendedModel.find({user: id}).populate(type)
+function findById(id,type){
+    return albumRecommendedModel.find({user:id}).populate(type)
 }
+
+function findAll() {
+    return albumRecommendedModel.find().populate('album user')
+}
+
+function deleteRecommendedAlbum(id) {
+    return albumRecommendedModel.remove({_id: id})
+}
+
 
 function findRecommendedAlbumsForUser(userId) {
     return albumRecommendedModel.find({user: userId}).populate('album')
@@ -27,6 +36,8 @@ var api = {
     createFollow: createFollow,
     findByHash: findByHash,
     findById: findById,
+    findAll: findAll,
+    deleteRecommendedAlbum: deleteRecommendedAlbum,
     findRecommendedAlbumsForUser: findRecommendedAlbumsForUser,
     removeRecommendedAlbum: removeRecommendedAlbum
 };

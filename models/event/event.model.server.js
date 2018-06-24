@@ -29,14 +29,21 @@ function isArtistPresentInEvent(eventId, artistId) {
 function deleteArtistFromEvent(eventId, artistId) {
     return eventModel.update({_id: eventId._id}, {$pull: {artist: artistId._id}})
 }
-
+function findEventByCity(city){
+    return eventModel.find({location:city})
+}
+function updateEvent(event){
+    return eventModel.updateOne({_id:event._id},event)
+}
 var api = {
     createEvent: createEvent,
     deleteEvent: deleteEvent,
     getArtistsInEvent: getArtistsInEvent,
     addArtistToEvent: addArtistToEvent,
     isArtistPresentInEvent: isArtistPresentInEvent,
-    deleteArtistFromEvent: deleteArtistFromEvent
+    deleteArtistFromEvent: deleteArtistFromEvent,
+    findEventByCity:findEventByCity,
+    updateEvent:updateEvent
 };
 
 module.exports = api;

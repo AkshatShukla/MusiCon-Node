@@ -1,6 +1,7 @@
 module.exports = function (app) {
 
     app.post('/api/playlist', createPlaylist);
+    app.put('/api/playlist', updatePlaylist);
     app.get('/api/playlists', findAllPlaylistOfUser);
     app.delete('/api/playlist/:playlistId', deletePlaylist);
     app.get('/api/playlist/:playlistId/tracks', getTracksInPlaylist);
@@ -12,6 +13,11 @@ module.exports = function (app) {
     var trackModel = require('../models/track/track.model.server');
 
 
+    function updatePlaylist(req,res) {
+        var playlist =req.body;
+        playlistModel.updatePlaylist(playlist)
+            .then(() => res.sendStatus(200));
+    }
 
     function createPlaylist(req, res) {
         var playlist = req.body;
@@ -69,9 +75,9 @@ module.exports = function (app) {
             artist: track.artists[0].name,
             url: track.external_urls.spotify,
             imageUrl: (track.album.images.length !== 0 ? track.album.images[0].url : ''),
-            duration:track.duration_ms,
-            popularity:track.popularity,
-            previewUrl:track.preview_url,
+            duration: track.duration_ms,
+            popularity: track.popularity,
+            previewUrl: track.preview_url,
 
         };
         if (user === undefined) {
@@ -91,13 +97,13 @@ module.exports = function (app) {
                     else {
                         playlistModel
                             .isTrackPresentInPlaylist({_id: playlistId}, {_id: queryresult._id})
-                            .then(hashFindResult =>{
-                                if(hashFindResult===null){
+                            .then(hashFindResult => {
+                                if (hashFindResult === null) {
                                     playlistModel
                                         .addTrackToPlaylist({_id: playlistId}, queryresult)
-                                        .then(()=> res.sendStatus(200))
+                                        .then(() => res.sendStatus(200))
                                 }
-                                else{
+                                else {
                                     res.sendStatus(501)
                                 }
                             })

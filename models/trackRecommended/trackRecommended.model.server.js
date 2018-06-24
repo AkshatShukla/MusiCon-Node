@@ -14,6 +14,15 @@ function findById(id, type) {
     return trackRecommendedModel.find({user: id}).populate(type)
 }
 
+function findAll() {
+    return trackRecommendedModel.find().populate('track user')
+}
+
+function deleteRecommendedTrack(id) {
+    return trackRecommendedModel.remove({_id: id})
+}
+
+
 function findRecommendedTracksForUser(userId) {
     return trackRecommendedModel.find({user: userId}).populate('track')
 }
@@ -23,9 +32,11 @@ function removeRecommendedTrack(userId, trackId) {
 }
 
 var api = {
-    createFollow: createFollow,
-    findByHash: findByHash,
-    findById: findById,
+    createFollow:createFollow,
+    findByHash:findByHash,
+    findById:findById,
+    findAll: findAll,
+    deleteRecommendedTrack: deleteRecommendedTrack,
     findRecommendedTracksForUser: findRecommendedTracksForUser,
     removeRecommendedTrack: removeRecommendedTrack
 };

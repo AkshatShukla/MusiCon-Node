@@ -27,6 +27,7 @@ module.exports = function (app) {
                 }
             });
     }
+
     function isAdmin(req,res){
         if(req.session['currentUser']===undefined){
             res.sendStatus(501);
@@ -45,6 +46,7 @@ module.exports = function (app) {
                     }
                 );}
     }
+
     function isLoggedIn(req,res) {
         if(req.session['currentUser']===undefined){
             res.sendStatus(500);
@@ -53,25 +55,22 @@ module.exports = function (app) {
             res.sendStatus(200);
         }
     }
+
     function updateProfile(req,res){
         var user = req.body;
         userModel.findUserById(req.session['currentUser']._id).then(response =>{
-            console.log(response);
             if(response.username===user.username){
-                console.log("in if of username and id match just update")
                 userModel.updateUser(req.session['currentUser']._id,user)
                     .then(response=>
                             res.sendStatus(200)
                     );
             }
             else{
-                userModel.findByUserName(user.username).then(response=>
-                {
-                    if(response===null)
-                    {
+                userModel.findByUserName(user.username).then(response => {
+                    if(response===null) {
                         userModel.updateUser(req.session['currentUser']._id,user)
                             .then(response=>
-                                    res.sendStatus(500)
+                                    res.sendStatus(200)
                             );
                     }
                     else{
@@ -80,6 +79,7 @@ module.exports = function (app) {
             }
         })
     }
+
     function login(req, res) {
         var credentials = req.body;
         userModel
@@ -110,12 +110,8 @@ module.exports = function (app) {
     }
 
     function profile(req, res) {
-        // userModel.findUserByUsername(req.session['currentUser']);
-
         userModel.findUserById(req.session['userId'])
             .then(response=> res.send(response));
-        // res.send(req.session['currentUser']);
-        // console.log(req.session['currentUser']);
     }
 
     function createUser(req, res) {
