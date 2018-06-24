@@ -2,10 +2,13 @@ module.exports = function (app) {
 
     app.post('/api/likeTrack', likeTrack);
     app.get('/api/likedTracks', getLikedTracks);
+    app.get('/api/recommendedTracks', getRecommendedTracks);
     app.delete('/api/dislikeTrack', dislikeTrack);
+    app.delete('/api/unrecommendTrack', removeRecommendedTrack);
 
     var trackModel = require('../models/track/track.model.server');
     var likeTrackModel = require('../models/likeTrack/likeTrack.model.server');
+    var recommendedTrackModel = require('../models/trackRecommended/trackRecommended.model.server');
 
 
     function likeTrack(req, res) {
@@ -73,6 +76,29 @@ module.exports = function (app) {
             .then((likedTracks) => {
                 likedTracks.map((likedTrack) => {
                     resultTracks.push(likedTrack.track)
+                });
+                res.send(resultTracks);
+            })
+            .catch(() => {
+                res.sendStatus(501);
+                res.send(resultTracks);
+            });
+    }
+
+    function removeRecommendedTrack(req, res) {
+        var track = req.body;
+        var user = req.session.currentUser;
+        recommendedTrackModel.removeRecommendedTrack(user._id, track._id)
+            .then(() => res.sendStatus(200))
+    }
+
+    function getRecommendedTracks(req, res) {
+        var user = req.session['currentUser'];
+        var resultTracks = [];
+        recommendedTrackModel.findRecommendedTracksForUser(user._id)
+            .then((recommendedTracks) => {
+                recommendedTracks.map((recommendedTrack) => {
+                    resultTracks.push(recommendedTrack.track)
                 });
                 res.send(resultTracks);
             })
