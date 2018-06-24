@@ -9,8 +9,12 @@ function createFollow(userid,albumid) {
 function findByHash(userid,albumid){
     return albumRecommendedModel.findOne({hash:albumid+userid})
 }
+function findById(id,type){
+    return albumRecommendedModel.find({user:id}).populate(type)
+}
 var api = {
     createFollow:createFollow,
-    findByHash:findByHash
+    findByHash:findByHash,
+    findById:findById
 };
 module.exports = api;

@@ -8,8 +8,12 @@ function createFollow(userid,trackid) {
 function findByHash(userid,trackid){
     return trackRecommendedModel.findOne({hash:trackid+userid})
 }
+function findById(id,type){
+    return trackRecommendedModel.find({user:id}).populate(type)
+}
 var api = {
     createFollow:createFollow,
-    findByHash:findByHash
+    findByHash:findByHash,
+    findById:findById
 };
 module.exports = api;
