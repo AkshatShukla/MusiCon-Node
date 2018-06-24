@@ -53,7 +53,9 @@ function findByUserName(username) {
 function deleteUser(id){
     return userModel.deleteOne({_id:id})
 }
-
+function findAudiophile(){
+    return userModel.find({type:'Audiophile'})
+}
 var api = {
     createUser: createUser,
     findAllUsers: findAllUsers,
@@ -67,7 +69,8 @@ var api = {
     updateUserPlayList: updateUserPlayList,
     findAllPlaylistOfUser: findAllPlaylistOfUser,
     deleteUserPlaylist: deleteUserPlaylist,
-    deleteUser:deleteUser
+    deleteUser:deleteUser,
+    findAudiophile:findAudiophile
 };
 
 module.exports = api;

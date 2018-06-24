@@ -2,11 +2,12 @@ module.exports = function (app) {
 
     app.post('/api/audiophile/track', recommendTrack);
     app.post('/api/audiophile/album', recommendAlbum);
-
+    app.get('/api/audiophile',findAllAudiophile)
     var trackModel = require('../models/track/track.model.server');
     var albumModel = require('../models/album/album.model.server');
     var albumRecommendedModel = require('../models/albumRecommended/albumRecommended.model.server');
     var trackRecommendedModel = require('../models/trackRecommended/trackRecommended.model.server');
+    var userModel = require('../models/user/user.model.server');
     function recommendTrack(req,res) {
         var track =req.body;
         var user = req.session.currentUser;
@@ -103,5 +104,9 @@ module.exports = function (app) {
                     }
                 });
         }
+    }
+    function findAllAudiophile(req,res){
+        userModel.findAudiophile()
+            .then(result => res.json(result));
     }
 }
