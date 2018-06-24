@@ -1,7 +1,10 @@
+var fetch = require('node-fetch');
+
 module.exports = function (app) {
 
     app.post('/api/event', createEvent);
     app.get('/api/events', findAllEventOfUser);
+    app.get('/api/events/nearby', findAllEventsNearUser);
     app.delete('/api/event/:eventId', deleteEvent);
     app.get('/api/event/:eventId/artists', getArtistsInEvent);
     app.post('/api/event/:eventId/addartist', addArtistToEvent);
@@ -103,6 +106,27 @@ module.exports = function (app) {
                             })
                     }
                 });
+        }
+    }
+
+    function findAllEventsNearUser(req,res){
+        var userId = req.session['userId']
+        if(userId!==undefined) {
+            userModel.findCity(userId)
+                .then(result => {
+                    fetch('https://app.ticketmaster.com/discovery/v2/events.json?classificationName=music&city='+
+                        result.city+'&apikey=RAcRAAAio2LeFih8v4pqWXlZo1CA4mVs')
+                        .then(response => response.json()
+                            .then(resultTM => {
+                                eventModel.findEventByCity(result.city)
+                                    .then(resultLocal =>{
+                                        res.json({tn:resultTM._embedded.events,lr:resultLocal});
+                                    })
+                            }))
+                })
+    }
+    else{
+            res.sendStatus(500);
         }
     }
 }
