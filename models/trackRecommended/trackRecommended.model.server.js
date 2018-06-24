@@ -10,6 +10,10 @@ function findByHash(userid,trackid){
     return trackRecommendedModel.findOne({hash:trackid+userid})
 }
 
+function findById(id,type){
+    return trackRecommendedModel.find({user:id}).populate(type)
+}
+
 function findAll() {
     return trackRecommendedModel.find().populate('track user')
 }
@@ -20,6 +24,8 @@ function deleteRecommendedTrack(id) {
 
 var api = {
     createFollow:createFollow,
+    findByHash:findByHash,
+    findById:findById,
     findByHash:findByHash,
     findAll: findAll,
     deleteRecommendedTrack: deleteRecommendedTrack

@@ -7,6 +7,10 @@ var audiophileFollowedSchema = mongoose.Schema({
     audiophile: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'UserModel'
+    },
+    hash: {
+        type: String,
+        unique: true
     }
 }, {collection: 'audiophileFollowed'});
 module.exports = audiophileFollowedSchema;

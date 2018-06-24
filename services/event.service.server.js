@@ -1,7 +1,11 @@
+var fetch = require('node-fetch');
+
 module.exports = function (app) {
 
     app.post('/api/event', createEvent);
+    app.put('/api/event', updateEvent);
     app.get('/api/events', findAllEventOfUser);
+    app.get('/api/events/nearby', findAllEventsNearUser);
     app.delete('/api/event/:eventId', deleteEvent);
     app.get('/api/event/:eventId/artists', getArtistsInEvent);
     app.post('/api/event/:eventId/addartist', addArtistToEvent);
@@ -11,8 +15,11 @@ module.exports = function (app) {
     var userModel = require('../models/user/user.model.server');
     var artistModel = require('../models/artist/artist.model.server');
 
-
-
+    function updateEvent(req,res){
+        var event = req.body;
+        eventModel.updateEvent(event)
+            .then(() => res.sendStatus(200));
+    }
     function createEvent(req, res) {
         var event = req.body;
         var user = req.session.currentUser;
@@ -69,7 +76,7 @@ module.exports = function (app) {
             spotifyId: artist.id,
             url: artist.external_urls.spotify,
             imageUrl: (artist.images.length !== 0 ? artist.images[0].url : ''),
-            popularity:artist.popularity,
+            popularity: artist.popularity,
 
         };
 
@@ -91,18 +98,44 @@ module.exports = function (app) {
                     else {
                         eventModel
                             .isArtistPresentInEvent({_id: eventId}, {_id: queryresult._id})
-                            .then(hashFindResult =>{
-                                if(hashFindResult===null){
+                            .then(hashFindResult => {
+                                if (hashFindResult === null) {
                                     eventModel
                                         .addArtistToEvent({_id: eventId}, queryresult)
                                         .then(() => res.sendStatus(200))
                                 }
-                                else{
+                                else {
                                     res.sendStatus(501)
                                 }
                             })
                     }
                 });
+        }
+    }
+
+    function findAllEventsNearUser(req, res) {
+        var userId = req.session['userId']
+        if (userId !== undefined) {
+            userModel.findCity(userId)
+                .then(result => {
+                    if (result.city === '') {
+                        res.sendStatus(501);
+                    }
+                    else {
+                        fetch('https://app.ticketmaster.com/discovery/v2/events.json?classificationName=music&city=' +
+                            result.city + '&apikey=RAcRAAAio2LeFih8v4pqWXlZo1CA4mVs')
+                            .then(response => response.json()
+                                .then(resultTM => {
+                                    eventModel.findEventByCity(result.city)
+                                        .then(resultLocal => {
+                                            res.json({tn: resultTM._embedded.events, lr: resultLocal});
+                                        })
+                                }))
+                    }
+                })
+        }
+        else {
+            res.sendStatus(500);
         }
     }
 }

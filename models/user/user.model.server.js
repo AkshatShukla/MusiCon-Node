@@ -56,21 +56,27 @@ function deleteUser(id){
 function findAudiophile(){
     return userModel.find({type:'Audiophile'})
 }
-var api = {
-    createUser: createUser,
-    findAllUsers: findAllUsers,
-    findUserById: findUserById,
-    findUserByCredentials: findUserByCredentials,
-    updateUser: updateUser,
-    findByUserName: findByUserName,
-    updateUserEvent: updateUserEvent,
-    findAllEventOfUser: findAllEventOfUser,
-    deleteUserEvent: deleteUserEvent,
-    updateUserPlayList: updateUserPlayList,
-    findAllPlaylistOfUser: findAllPlaylistOfUser,
-    deleteUserPlaylist: deleteUserPlaylist,
-    deleteUser:deleteUser,
-    findAudiophile:findAudiophile
-};
+function findCity(id)
+{
+    return userModel.findOne({_id:id})
+}
+
+    var api = {
+        createUser: createUser,
+        findAllUsers: findAllUsers,
+        findUserById: findUserById,
+        findUserByCredentials: findUserByCredentials,
+        updateUser: updateUser,
+        findByUserName: findByUserName,
+        updateUserEvent: updateUserEvent,
+        findAllEventOfUser: findAllEventOfUser,
+        deleteUserEvent: deleteUserEvent,
+        updateUserPlayList: updateUserPlayList,
+        findAllPlaylistOfUser: findAllPlaylistOfUser,
+        deleteUserPlaylist: deleteUserPlaylist,
+        deleteUser:deleteUser,
+        findAudiophile:findAudiophile,
+        findCity:findCity
+    };
 
 module.exports = api;

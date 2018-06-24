@@ -11,6 +11,10 @@ function findByHash(userid,albumid){
     return albumRecommendedModel.findOne({hash:albumid+userid})
 }
 
+function findById(id,type){
+    return albumRecommendedModel.find({user:id}).populate(type)
+}
+
 function findAll() {
     return albumRecommendedModel.find().populate('album user')
 }
@@ -20,8 +24,10 @@ function deleteRecommendedAlbum(id) {
 }
 
 var api = {
-    createFollow:createFollow,
-    findByHash:findByHash,
+    createFollow: createFollow,
+    findByHash: findByHash,
+    findById: findById,
+    findByHash: findByHash,
     findAll: findAll,
     deleteRecommendedAlbum: deleteRecommendedAlbum
 };

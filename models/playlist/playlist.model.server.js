@@ -28,6 +28,9 @@ function isTrackPresentInPlaylist(playlistId, trackId) {
 function deleteTrackFromPlaylist(playlistId, trackId) {
     return playlistModel.update({_id: playlistId._id}, {$pull: {track: trackId._id}})
 }
+function updatePlaylist(playlist){
+    return playlistModel.updateOne({_id:playlist._id},playlist)
+}
 
 var api = {
     createPlaylist: createPlaylist,
@@ -35,7 +38,8 @@ var api = {
     getTracksInPlaylist: getTracksInPlaylist,
     addTrackToPlaylist: addTrackToPlaylist,
     isTrackPresentInPlaylist: isTrackPresentInPlaylist,
-    deleteTrackFromPlaylist: deleteTrackFromPlaylist
+    deleteTrackFromPlaylist: deleteTrackFromPlaylist,
+    updatePlaylist:updatePlaylist
 };
 
 module.exports = api;

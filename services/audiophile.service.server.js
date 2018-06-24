@@ -3,8 +3,12 @@ module.exports = function (app) {
     app.post('/api/audiophile/track', recommendTrack);
     app.post('/api/audiophile/album', recommendAlbum);
     app.get('/api/audiophile',findAllAudiophile)
+    app.post('/api/audiophile/:audiophileId', followAudiophile);
+    app.get('/api/audiophile/album/:audiophileId', GetAlbums);
+    app.get('/api/audiophile/track/:audiophileId', GetTracks);
     var trackModel = require('../models/track/track.model.server');
     var albumModel = require('../models/album/album.model.server');
+    var audiophileFollowedModel = require('../models/audiophileFollowed/audiophileFollowed.model.server');
     var albumRecommendedModel = require('../models/albumRecommended/albumRecommended.model.server');
     var trackRecommendedModel = require('../models/trackRecommended/trackRecommended.model.server');
     var userModel = require('../models/user/user.model.server');
@@ -108,5 +112,35 @@ module.exports = function (app) {
     function findAllAudiophile(req,res){
         userModel.findAudiophile()
             .then(result => res.json(result));
+    }
+    function followAudiophile (req,res) {
+        var user = req.session.currentUser;
+        var audiophileId = req.params['audiophileId'];
+        if (user === undefined) {
+            res.sendStatus(500);
+        }
+        else {
+            audiophileFollowedModel.findByHash(req.session.userId,audiophileId)
+                .then(results => {
+                    if (results){
+                        res.sendStatus(501);
+                    }
+                    else{
+                        audiophileFollowedModel.createFollow(req.session.userId,audiophileId)
+                            .then(() => {
+                            res.sendStatus(200);
+                            })
+                    }
+                })
+        }
+
+    }
+    function GetAlbums(req,res){
+        albumRecommendedModel.findById(req.params['audiophileId'],'album')
+            .then(result=> res.json(result));
+    }
+    function GetTracks(req,res){
+        trackRecommendedModel.findById(req.params['audiophileId'],'track')
+            .then(result=> res.json(result));
     }
 }
