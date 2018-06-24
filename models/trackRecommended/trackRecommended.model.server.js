@@ -3,7 +3,7 @@ var trackRecommendedSchema = require('./trackRecommended.schema.server');
 var trackRecommendedModel = mongoose.model('TrackRecommendedModel', trackRecommendedSchema);
 
 function createFollow(userId, trackId) {
-    return trackRecommendedModel.create({track: trackId, user: useriI, hash: trackId + userId})
+    return trackRecommendedModel.create({track: trackId, user: userId, hash: trackId + userId})
 }
 
 function findByHash(userId, trackId) {
