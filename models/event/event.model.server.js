@@ -14,9 +14,14 @@ function deleteEvent(eventId) {
     return eventModel.remove(eventId);
 }
 
+function getArtistsInEvent(eventId) {
+    return eventModel.findOne({_id: eventId._id}, {artist: 1}).populate('artist')
+}
+
 var api = {
     createEvent: createEvent,
-    deleteEvent: deleteEvent
+    deleteEvent: deleteEvent,
+    getArtistsInEvent: getArtistsInEvent
 };
 
 module.exports = api;
