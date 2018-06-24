@@ -73,4 +73,6 @@ var artistService = require('./services/artist.service.server');
 artistService(app);
 var adminService = require('./services/admin.service.server');
 adminService(app);
+var audiophileService = require('./services/audiophile.service.server');
+audiophileService(app);
 app.listen(process.env.PORT || 4000);

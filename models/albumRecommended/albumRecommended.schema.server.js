@@ -7,6 +7,10 @@ var albumRecommendedSchema = mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'UserModel'
+    },
+    hash: {
+        type: String,
+        unique: true
     }
 }, {collection: 'albumRecommended'});
 module.exports = albumRecommendedSchema;
