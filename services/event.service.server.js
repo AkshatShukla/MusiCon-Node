@@ -3,6 +3,7 @@ var fetch = require('node-fetch');
 module.exports = function (app) {
 
     app.post('/api/event', createEvent);
+    app.put('/api/event', updateEvent);
     app.get('/api/events', findAllEventOfUser);
     app.get('/api/events/nearby', findAllEventsNearUser);
     app.delete('/api/event/:eventId', deleteEvent);
@@ -14,7 +15,11 @@ module.exports = function (app) {
     var userModel = require('../models/user/user.model.server');
     var artistModel = require('../models/artist/artist.model.server');
 
-
+    function updateEvent(req,res){
+        var event = req.body;
+        eventModel.updateEvent(event)
+            .then(() => res.sendStatus(200));
+    }
     function createEvent(req, res) {
         var event = req.body;
         var user = req.session.currentUser;
