@@ -3,14 +3,27 @@ var artistFollowedSchema = require('./artistFollowed.schema.server');
 var artistFollowedModel = mongoose.model('ArtistFollowedModel', artistFollowedSchema);
 
 
-function createFollow(userid,artistid) {
-    return artistFollowedModel.create({artist:artistid,user:userid,hash:artistid+userid})
+function createFollow(userId, artistId) {
+    return artistFollowedModel.create({artist: artistId, user: userId, hash: artistId + userId})
 }
-function findByHash(userid,artistid){
-    return artistFollowedModel.findOne({hash:artistid+userid})
+
+function findByHash(userId, artistId) {
+    return artistFollowedModel.findOne({hash: artistId + userId})
 }
+
+function findFollowedArtistsForUser(userId) {
+    return artistFollowedModel.find({user: userId}, {artist: 1}).populate('artist')
+}
+
+function unfollowArtist(userId, artistId) {
+    return artistFollowedModel.deleteOne({user: userId, artist: artistId})
+}
+
 var api = {
-    createFollow:createFollow,
-    findByHash:findByHash
+    createFollow: createFollow,
+    findByHash: findByHash,
+    findFollowedArtistsForUser: findFollowedArtistsForUser,
+    unfollowArtist: unfollowArtist
 };
+
 module.exports = api;
