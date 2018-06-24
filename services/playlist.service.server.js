@@ -89,7 +89,8 @@ module.exports = function (app) {
                             )
                     }
                     else {
-                        playlistModel.isTrackPresentInPlaylist({_id: playlistId}, {_id: queryresult._id})
+                        playlistModel
+                            .isTrackPresentInPlaylist({_id: playlistId}, {_id: queryresult._id})
                             .then(hashFindResult =>{
                                 if(hashFindResult===null){
                                     playlistModel
