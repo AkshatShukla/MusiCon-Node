@@ -50,6 +50,9 @@ function findAllPlaylistOfUser(user) {
 function findByUserName(username) {
     return userModel.findOne({username: username});
 }
+function deleteUser(id){
+    return userModel.deleteOne({_id:id})
+}
 
 var api = {
     createUser: createUser,
@@ -63,7 +66,8 @@ var api = {
     deleteUserEvent: deleteUserEvent,
     updateUserPlayList: updateUserPlayList,
     findAllPlaylistOfUser: findAllPlaylistOfUser,
-    deleteUserPlaylist: deleteUserPlaylist
+    deleteUserPlaylist: deleteUserPlaylist,
+    deleteUser:deleteUser
 };
 
 module.exports = api;
