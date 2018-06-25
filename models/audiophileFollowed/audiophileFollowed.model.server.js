@@ -18,10 +18,10 @@ function unfollowAudiophile(userId, audiophileId) {
     return audiophileFollowedModel.deleteOne({listener: userId, audiophile: audiophileId})
 }
 function dell(id){
-    return audiophileFollowedModel.deleteOne({listener:id})
+    return audiophileFollowedModel.remove({listener:id})
 }
 function dela(id){
-    return audiophileFollowedModel.deleteOne({audiophile:id})
+    return audiophileFollowedModel.remove({audiophile:id})
 }
 var api = {
     createFollow: createFollow,

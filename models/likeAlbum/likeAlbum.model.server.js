@@ -25,7 +25,7 @@ function deleteLikedAlbum(id) {
     return likeAlbumModel.remove({_id: id})
 }
 function del(id){
-    return likeAlbumModel.deleteOne({user:id})
+    return likeAlbumModel.remove({user:id})
 }
 
 var api = {

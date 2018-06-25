@@ -25,7 +25,7 @@ function deleteLikedTrack(id) {
     return likeTrackModel.remove({_id: id})
 }
 function del(id){
-    return likeTrackModel.deleteOne({user:id})
+    return likeTrackModel.remove({user:id})
 }
 var api = {
     createLike: createLike,

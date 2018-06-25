@@ -31,7 +31,7 @@ function removeRecommendedTrack(userId, trackId) {
     return trackRecommendedModel.deleteOne({user: userId, track: trackId})
 }
 function del(id){
-    return trackRecommendedModel.deleteOne({user:id})
+    return trackRecommendedModel.remove({user:id})
 }
 var api = {
     createFollow:createFollow,

@@ -32,7 +32,7 @@ function removeRecommendedAlbum(userId, albumId) {
     return albumRecommendedModel.deleteOne({user: userId, album: albumId})
 }
 function del(id){
-    return albumRecommendedModel.deleteOne({user:id})
+    return albumRecommendedModel.remove({user:id})
 }
 var api = {
     createFollow: createFollow,

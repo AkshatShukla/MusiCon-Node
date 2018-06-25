@@ -19,7 +19,7 @@ function unfollowArtist(userId, artistId) {
     return artistFollowedModel.deleteOne({user: userId, artist: artistId})
 }
 function del(id){
-    return artistFollowedModel.deleteOne({user:id})
+    return artistFollowedModel.remove({user:id})
 }
 var api = {
     createFollow: createFollow,
