@@ -98,6 +98,7 @@ module.exports = function (app) {
 
     function logout(req, res) {
         req.session.destroy();
+        req.session = null;
         res.sendStatus(200);
     }
 
