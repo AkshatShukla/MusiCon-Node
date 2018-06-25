@@ -6,7 +6,7 @@ var userSchema = mongoose.Schema({
     firstName: {type: String, default: ''},
     lastName: {type: String, default: ''},
     email: {type: String, default: ''},
-    dob: Date,
+    dob: {type: Date, default:new Date()},
     city: {type: String, default: ''},
     phone: {type: Number, default: 0},
     type: String,
