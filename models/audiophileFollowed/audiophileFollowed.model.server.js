@@ -17,12 +17,19 @@ function findFollowedAudiophilesForUser(userId) {
 function unfollowAudiophile(userId, audiophileId) {
     return audiophileFollowedModel.deleteOne({listener: userId, audiophile: audiophileId})
 }
-
+function dell(id){
+    return audiophileFollowedModel.deleteOne({listener:id})
+}
+function dela(id){
+    return audiophileFollowedModel.deleteOne({audiophile:id})
+}
 var api = {
     createFollow: createFollow,
     findByHash: findByHash,
     findFollowedAudiophilesForUser: findFollowedAudiophilesForUser,
-    unfollowAudiophile: unfollowAudiophile
+    unfollowAudiophile: unfollowAudiophile,
+    dell:dell,
+    dela:dela
 };
 
 module.exports = api;

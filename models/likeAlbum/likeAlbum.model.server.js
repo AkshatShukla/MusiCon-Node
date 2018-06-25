@@ -24,6 +24,9 @@ function findAll() {
 function deleteLikedAlbum(id) {
     return likeAlbumModel.remove({_id: id})
 }
+function del(id){
+    return likeAlbumModel.deleteOne({user:id})
+}
 
 var api = {
 
@@ -32,7 +35,8 @@ var api = {
     findLikedAlbumForUser: findLikedAlbumForUser,
     dislikeAlbum: dislikeAlbum,
     findAll: findAll,
-    deleteLikedAlbum: deleteLikedAlbum
+    deleteLikedAlbum: deleteLikedAlbum,
+    del:del
 };
 
 module.exports = api;

@@ -30,7 +30,9 @@ function findRecommendedTracksForUser(userId) {
 function removeRecommendedTrack(userId, trackId) {
     return trackRecommendedModel.deleteOne({user: userId, track: trackId})
 }
-
+function del(id){
+    return trackRecommendedModel.deleteOne({user:id})
+}
 var api = {
     createFollow:createFollow,
     findByHash:findByHash,
@@ -38,6 +40,7 @@ var api = {
     findAll: findAll,
     deleteRecommendedTrack: deleteRecommendedTrack,
     findRecommendedTracksForUser: findRecommendedTracksForUser,
-    removeRecommendedTrack: removeRecommendedTrack
+    removeRecommendedTrack: removeRecommendedTrack,
+    del:del
 };
 module.exports = api;

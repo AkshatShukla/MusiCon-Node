@@ -18,12 +18,15 @@ function findFollowedArtistsForUser(userId) {
 function unfollowArtist(userId, artistId) {
     return artistFollowedModel.deleteOne({user: userId, artist: artistId})
 }
-
+function del(id){
+    return artistFollowedModel.deleteOne({user:id})
+}
 var api = {
     createFollow: createFollow,
     findByHash: findByHash,
     findFollowedArtistsForUser: findFollowedArtistsForUser,
-    unfollowArtist: unfollowArtist
+    unfollowArtist: unfollowArtist,
+    del:del
 };
 
 module.exports = api;

@@ -31,7 +31,9 @@ function findRecommendedAlbumsForUser(userId) {
 function removeRecommendedAlbum(userId, albumId) {
     return albumRecommendedModel.deleteOne({user: userId, album: albumId})
 }
-
+function del(id){
+    return albumRecommendedModel.deleteOne({user:id})
+}
 var api = {
     createFollow: createFollow,
     findByHash: findByHash,
@@ -39,6 +41,7 @@ var api = {
     findAll: findAll,
     deleteRecommendedAlbum: deleteRecommendedAlbum,
     findRecommendedAlbumsForUser: findRecommendedAlbumsForUser,
-    removeRecommendedAlbum: removeRecommendedAlbum
+    removeRecommendedAlbum: removeRecommendedAlbum,
+    del:del
 };
 module.exports = api;

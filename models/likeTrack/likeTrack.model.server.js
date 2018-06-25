@@ -24,14 +24,17 @@ function findAll() {
 function deleteLikedTrack(id) {
     return likeTrackModel.remove({_id: id})
 }
-
+function del(id){
+    return likeTrackModel.deleteOne({user:id})
+}
 var api = {
     createLike: createLike,
     findByHash:findByHash,
     findLikedTrackForUser: findLikedTrackForUser,
     dislikeTrack: dislikeTrack,
     findAll: findAll,
-    deleteLikedTrack: deleteLikedTrack
+    deleteLikedTrack: deleteLikedTrack,
+    del:del
 };
 
 module.exports = api;

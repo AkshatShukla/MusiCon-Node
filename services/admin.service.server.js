@@ -2,7 +2,7 @@ module.exports = function (app) {
 
     app.get('/api/admin/user', getAllUsers);
     app.post('/api/admin/user', updateUser);
-    app.delete('/api/admin/user/:userId',deleteUser);
+    app.delete('/api/admin/user/:userId', deleteUser);
     app.get('/api/admin/all-liked-album', allLikedAlbum);
     app.delete('/api/admin/likedAlbum/:likedAlbumId', deleteLikedAlbum);
     app.get('/api/admin/all-liked-track', allLikedTrack);
@@ -17,11 +17,20 @@ module.exports = function (app) {
     var likeTrackModel = require('../models/likeTrack/likeTrack.model.server');
     var albumRecommendedModel = require('../models/albumRecommended/albumRecommended.model.server');
     var trackRecommendedModel = require('../models/trackRecommended/trackRecommended.model.server');
+    var artistFollowedModel = require('../models/artistFollowed/artistFollowed.model.server');
+    var audiophileFollowedModel = require('../models/audiophileFollowed/audiophileFollowed.model.server');
 
-    function deleteUser(req,res){
+    function deleteUser(req, res) {
         var id = req.params.userId;
         userModel.deleteUser(id)
-            .then(() => res.sendStatus(200));
+            .then(() => albumRecommendedModel.del(id)
+                .then(() => artistFollowedModel.del(id)
+                    .then(() => audiophileFollowedModel.dela(id)
+                        .then(() => audiophileFollowedModel.dell(id)
+                            .then(() => likeAlbumModel.del(id)
+                                .then(() => likeTrackModel.del(id)
+                                    .then(() => trackRecommendedModel.del(id)
+                                        .then(() => res.sendStatus(200)))))))))
 
     }
 
@@ -39,19 +48,19 @@ module.exports = function (app) {
         }
     }
 
-    function updateUser(req,res){
+    function updateUser(req, res) {
         var user = req.body;
-        if(user._id===undefined){
+        if (user._id === undefined) {
             createUser(user)
-                .then(()=> res.sendStatus(201))
+                .then(() => res.sendStatus(201))
         }
-        else{
-            userModel.updateUser(user._id,user)
+        else {
+            userModel.updateUser(user._id, user)
                 .then(result => res.sendStatus(200))
         }
     }
 
-    function createUser(user){
+    function createUser(user) {
         return userModel.createUser(user);
     }
 
